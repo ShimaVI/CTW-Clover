@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<map proto="1.3.3">
+  <name>Clover</name>
+  <version>1.1</version>
+  <objective>Take the enemy's wool located to either side of the enemy's base and place it in your victory monument.</objective>
+  <authors>
+    <author>Uey</author>
+  </authors>
+  <teams>
+    <team color="blue" max="12">Blue Team</team>
+    <team color="dark_red" max="12">Red Team</team>
+    <team color="green" max="12">Green Team</team>
+    <team color="yellow" max="12">Yellow Team</team>
+  </teams>
+  <kits>
+    <kit name="spawn">
+      <item slot="0">diamond sword</item>
+      <item slot="1">bow</item>
+      <item slot="2">iron pickaxe</item>
+      <item slot="3">iron axe</item>
+      <item slot="5">golden apple</item>
+      <item slot="6" amount="32">cooked fish</item>
+      <item slot="7" amount="64" damage="2">wood</item>
+      <item slot="8" amount="64" damage="2">wood</item>
+      <item slot="35" amount="64" damage="2">wood</item>
+      <item slot="26" amount="64" damage="2">wood</item>
+      <item slot="27" amount="64">arrow</item>
+      <helmet bind="true">chainmail helmet</helmet>
+      <leggings bind="true">chainmail leggings</leggings>
+      <boots bind="true">chainmail boots</boots>
+    </kit>
+    <kit name="blue" parents="spawn">
+      <chestplate color="55FFFF" bind="true">leather chestplate</chestplate>
+    </kit>
+    <kit name="red" parents="spawn">
+      <chestplate color="FF55FF" bind="true">leather chestplate</chestplate>
+    </kit>
+    <kit name="green" parents="spawn">
+      <chestplate color="55FF55" bind="true">leather chestplate</chestplate>
+    </kit>
+    <kit name="yellow" parents="spawn">
+      <chestplate color="FFFF55" bind="true">leather chestplate</chestplate>
+    </kit>
+  </kits>
+  <spawns>
+    <spawn team="blue" yaw="45" pitch="0" kit="blue">
+      <block>544,47,456</block>
+    </spawn>
+    <spawn team="red" yaw="135" pitch="0" kit="red">
+      <block>544,47,544</block>
+    </spawn>
+    <spawn team="green" yaw="-45" pitch="0" kit="green">
+      <block>456,47,456</block>
+    </spawn>
+    <spawn team="yellow" yaw="-135" pitch="0" kit="yellow">
+      <block>456,47,544</block>
+    </spawn>
+    <default yaw="0">
+      <cuboid min="496,91,496" max="503,91,501" />
+    </default>
+  </spawns>
+   <filters>
+    <filter name="only-blue" parents="deny-all">
+      <allow>
+        <team>blue</team>
+      </allow>
+    </filter>
+    <filter name="only-red" parents="deny-all">
+      <allow>
+        <team>red</team>
+      </allow>
+    </filter>
+    <filter name="only-green" parents="deny-all">
+      <allow>
+        <team>green</team>
+      </allow>
+    </filter>
+    <filter name="only-yellow" parents="deny-all">
+      <allow>
+        <team>yellow</team>
+      </allow>
+    </filter>
+    
+    <filter name="deny-blue" parents="allow-all">
+      <deny>
+        <team>blue</team>
+      </deny>
+    </filter>
+    <filter name="deny-red" parents="allow-all">
+      <deny>
+        <team>red</team>
+      </deny>
+    </filter>
+    <filter name="deny-green" parents="allow-all">
+      <deny>
+        <team>green</team>
+      </deny>
+    </filter>
+    <filter name="deny-yellow" parents="allow-all">
+      <deny>
+        <team>yellow</team>
+      </deny>
+    </filter>
+    
+    <filter name="deny-wool" parents="allow-all">
+      <deny>
+        <block>wool</block>
+      </deny>
+    </filter>
+    
+  </filters>
+  
+  <regions>
+  
+  <union name="base">
+  <complement name="blue-base">
+  <rectangle min="537,449" max="551,463"/>
+  <block>548,9,451</block>
+  <block>549,9,452</block>
+  </complement>
+  <complement name="red-base">
+  <rectangle min="551,537" max="537,551"/>
+  <block>549,9,548</block>
+  <block>548,9,549</block>
+  </complement>
+  <complement name="green-base">
+  <rectangle min="449,463" max="463,449"/>
+  <block>451,9,452</block>
+  <block>452,9,451</block>
+  </complement>
+  <complement name="yellow-base">
+  <rectangle min="463,551" max="449,537"/>
+  <block>452,9,549</block>
+  <block>451,9,548</block>
+  </complement>
+  </union>
+  
+  <apply enter="deny-blue" message="You may not enter your team's wool room.">
+  <rectangle name="blue-room" min="557,443" max="572,428"/>
+  </apply>
+  <apply enter="deny-red" message="You may not enter your team's wool room.">
+  <rectangle name="red-room" min="557,557" max="572,572"/>
+  </apply>
+  <apply enter="deny-green" message="You may not enter your team's wool room.">
+  <rectangle name="green-room" min="443,443" max="428,428"/>
+  </apply>
+  <apply enter="deny-yellow" message="You may not enter your team's wool room.">
+  <rectangle name="yellow-room" min="443,557" max="428,572"/>
+  </apply>
+  
+  <union name="wool-rooms">
+  <region name="blue-room"/>
+  <region name="red-room"/>
+  <region name="green-room"/>
+  <region name="yellow-room"/>
+  </union>
+  
+  <apply block="deny-all" message="You may not modify wool room.">
+  <region name="wool-rooms"/>
+  </apply>
+  
+  <apply enter="only-blue" message="You may not enter other team's base.">
+  <region name="blue-base"/>
+  </apply>
+  <apply enter="only-red" message="You may not enter other team's base.">
+  <region name="red-base"/>
+  </apply>
+  <apply enter="only-green" message="You may not enter other team's base.">
+  <region name="green-base"/>
+  </apply>
+  <apply enter="only-yellow" message="You may not enter other team's base.">
+  <region name="yellow-base"/>
+  </apply>
+  
+  <apply block="deny-all" message="Here is out ofrange.">
+  <negative>
+  <cuboid min="428,0,428" max="572,35,572"/>
+  </negative>
+  </apply>
+  
+  <apply block="deny-all" message="You may not modify the base.">
+  <region name="base"/>
+  </apply>
+  
+  <apply block="deny-wool" message="You can only place wools on the pedestal.">
+  <rectangle min="428,428" max="572,572"/>
+  </apply>
+  
+  </regions>
+  
+   <wools>
+    <wool team="dark_red" color="blue">
+      <block location="549,9,548" />
+    </wool>
+    <wool team="dark_red" color="yellow">
+      <block location="548,9,549" />
+    </wool>
+    <wool team="blue" color="red">
+      <block location="549,9,452" />
+    </wool>
+    <wool team="blue" color="green">
+      <block location="548,9,451" />
+    </wool>
+    <wool team="green" color="blue">
+      <block location="451,9,452" />
+    </wool>
+    <wool team="green" color="yellow">
+      <block location="452,9,451" />
+    </wool>
+    <wool team="yellow" color="red">
+      <block location="452,9,549" />
+    </wool>
+    <wool team="yellow" color="green">
+      <block location="451,9,548" />
+    </wool>
+  </wools>
+  
+  <killreward>
+  <item>golden apple</item>
+  </killreward>
+  
+  <itemremove>
+  <item>diamond sword</item>
+  <item>bow</item>
+  <item>arrow</item>
+  <item>wood</item>
+  <item>glass</item>
+  <item>cooked fish</item>
+  <item>iron pickaxe</item>
+  <item>iron axe</item>
+  <item>wool</item>
+  <item>diamond chestplate</item>
+  <item>golden apple</item>
+  <item>iron block</item>
+  <item>iron helmet</item>
+  <item>iron chestplate</item>
+  <item>iron leggings</item>
+  <item>iron boots</item>
+  <item>bucket</item>
+  <item>water bucket</item>
+  </itemremove>
+  
+  <include src="tutorial.xml"/>
+  
+  <tutorial>
+  
+	<stage title="[CTW] Clover">
+		<message>
+			<line>This map is named Clover.</line>
+			<line>Objecitive is Capturing and Placing Wools to the pedestal.</line>
+		</message>
+		<message lang="ja_JP">
+			<line>このマップはCloverというCTWマップです。</line>
+			<line>目標は、敵の陣地から羊毛を持ち帰って台座に設置することです。</line>
+		</message>
+		<teleport>
+			<point yaw="0" pitch="90">500,70,500</point>
+		</teleport>
+	</stage>
+	
+	<stage title="Red Team's Base">
+	    <title lang="ja_JP">赤チームの拠点</title>
+		<message>
+			<line>Here is red team's base.</line>
+			<line>There is wool pedestal in the base.</line>
+		</message>
+		<message lang="ja_JP">
+			<line>ここは赤チームの拠点です。</line>
+			<line>羊毛台座は拠点内にあります。</line>
+		</message>
+		<teleport>
+			<point yaw="-9" pitch="40">542,18,527</point>
+		</teleport>
+	</stage>
+	
+	<stage title="Wool room">
+    	<title lang="ja_JP">羊毛部屋</title>
+		<message>
+			<line>This is green team's wool room.</line>
+			<line>Green team's players have to defence here.</line>
+			<line>Then yellow and blue team's players have to enter here and take wools.</line>
+		</message>
+		<message lang="ja_JP">
+			<line>ここは緑チームの羊毛部屋です。</line>
+			<line>緑チームはこの緑の羊毛部屋を隣の黄色チームと赤チームから守らなければいけません。</line>
+			<line>同時に黄色チームと赤チームはここから羊毛を奪ってゆく必要があります。</line>
+		</message>
+		<teleport>
+			<point yaw="-45" pitch="80">434,41,434</point>
+		</teleport>
+	</stage>
+	
+	<stage title="Pedestal of wool">
+    	<title lang="ja_JP">羊毛台座</title>
+		<message>
+			<line>This is pedestal to place the wool.</line>
+			<line>If you have the wool, place it to this.</line>
+			<line>This map has 4 teams, but you don't have to capture 3 wools.</line>
+			<line>You need to capture 2 wools of next team's.</line>
+		</message>
+		<message lang="ja_JP">
+			<line>これは羊毛を設置する台座です。</line>
+			<line>もし羊毛を持ち帰ることができたら、この台座に設置してください。</line>
+			<line>また、このマップは4チームありますが、奪わなければいけないのは隣のチームの羊毛のみです。</line>
+			<line>つまり1チームにつき2つずつ目標の羊毛があります。</line>
+		</message>
+		<teleport>
+			<point yaw="135" pitch="10">454,8,454</point>
+		</teleport>
+	</stage>
+	
+	<stage title="That's about it.">
+    	<title lang="ja_JP">そんなところです。</title>
+		<message>
+			<line>Thank you for checking tutorial. Have fun G_G</line>
+		</message>
+		<message lang="ja_JP">
+			<line>以上です。チュートリアルを見てくれてありがとうございます。</line>
+		</message>
+	</stage>
+	
+</tutorial>
+
+<locales>
+<locale lang="ja_JP">
+<string name="Take the enemy's wool located to either side of the enemy's base and place it in your victory monument." value="敵陣から羊毛を持ち帰り、自陣の台座に設置すること"/>
+<string name="You may not modify the base." value="拠点は編集できません。"/>
+<string name="You may not enter your team's wool room." value="自陣の羊毛部屋には入れません。"/>
+<string name="You may not modify your team's wool room." value="自陣の羊毛部屋は編集できません。"/>
+<string name="You may not enter other team's base." value="敵チームの拠点には入れません。"/>
+<string name="You can only place wools on the pedestal." value="このマップで羊毛は台座にしか設置できません。"/>
+<string name="You may not modify the void area." value="範囲外なので編集できません。"/>
+
+</locale>
+</locales>
+  
+  </map>
